@@ -1,0 +1,27 @@
+pipeline {
+  agent any
+  stages {
+    stage("build") {
+      steps {
+        sh 'docker build -t nandeeshreddy/myapp:latest.'
+      }
+    }
+    stage("push") {
+      steps {
+        withDockerRegistry([credentialsId: 'docker-hub', url: '']){
+          sh 'docker push nandeeshreddy/myapp:latest'
+        }
+      }
+    }
+    stage("Deploy") {
+      steps {
+        sh '''
+        ssh user@server "docker pull nandeeshreddy/myapp:latest && \
+        docker stop myapp || true && \
+        docker rm myapp || true && \
+        docker run -d -p 80:5000 --name myapp nandeeshreddy/myapp:latest"
+        '''
+      }
+    }
+  }
+}
