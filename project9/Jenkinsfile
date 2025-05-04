@@ -19,7 +19,7 @@ pipeline {
     stage("Deploy") {
       steps {
         sh '''
-        ssh user@server "docker pull nandeeshreddy/myapp:latest && \
+        ssh user@3.15.189.172 "docker pull nandeeshreddy/myapp:latest && \
         docker stop myapp || true && \
         docker rm myapp || true && \
         docker run -d -p 80:5000 --name myapp nandeeshreddy/myapp:latest"
