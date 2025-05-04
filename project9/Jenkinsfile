@@ -19,6 +19,7 @@ pipeline {
     stage("Deploy") {
       steps {
         sh '''
+        mkdir -p ~/.ssh
         ssh-keyscan -H 3.15.189.172 >> ~/.ssh/known_hosts
         ssh user@3.15.189.172 "docker pull nandeeshreddy/myapp:latest && \
         docker stop myapp || true && \
